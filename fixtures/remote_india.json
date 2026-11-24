@@ -1,0 +1,105 @@
+{
+  "postings": [
+    {
+      "id": "A",
+      "text": "Backend intern. Build Python and SQL services. Remote anywhere in India.",
+      "level": "internship",
+      "role_evidence": "Backend intern.",
+      "mode": "remote",
+      "countries": [
+        "IN"
+      ],
+      "city": null,
+      "location_evidence": "Remote anywhere in India."
+    },
+    {
+      "id": "B",
+      "text": "Platform engineering internship. Maintain Python APIs and PostgreSQL. Hybrid in Gurugram.",
+      "level": "internship",
+      "role_evidence": "Platform engineering internship.",
+      "mode": "hybrid",
+      "countries": null,
+      "city": "Gurugram",
+      "location_evidence": "Hybrid in Gurugram."
+    },
+    {
+      "id": "C",
+      "text": "Backend intern. Build Python services. Remote within the United States only.",
+      "level": "internship",
+      "role_evidence": "Backend intern.",
+      "mode": "remote",
+      "countries": [
+        "US"
+      ],
+      "city": null,
+      "location_evidence": "Remote within the United States only."
+    },
+    {
+      "id": "D",
+      "text": "Senior backend engineer, full-time. Write Python and SQL. Remote anywhere in India.",
+      "level": "full_time",
+      "role_evidence": "Senior backend engineer, full-time.",
+      "mode": "remote",
+      "countries": [
+        "IN"
+      ],
+      "city": null,
+      "location_evidence": "Remote anywhere in India."
+    },
+    {
+      "id": "E",
+      "text": "Backend intern. Maintain Python APIs. Work from home available. Eligible countries unspecified.",
+      "level": "internship",
+      "role_evidence": "Backend intern.",
+      "mode": "remote",
+      "countries": null,
+      "city": null,
+      "location_evidence": "Work from home available. Eligible countries unspecified."
+    }
+  ],
+  "preferences": {
+    "level": "internship",
+    "remote_country": "IN",
+    "hybrid_cities": [],
+    "query": "Python SQL backend"
+  },
+  "turns": [
+    {
+      "name": "Remote only",
+      "edit": {},
+      "expected": {
+        "A": "include",
+        "B": "exclude",
+        "C": "exclude",
+        "D": "exclude",
+        "E": "review"
+      }
+    },
+    {
+      "name": "Allow hybrid work in Gurugram",
+      "edit": {
+        "allow_hybrid": "Gurugram"
+      },
+      "expected": {
+        "A": "include",
+        "B": "include",
+        "C": "exclude",
+        "D": "exclude",
+        "E": "review"
+      }
+    },
+    {
+      "name": "Return to remote only",
+      "edit": {
+        "remove_hybrid": "Gurugram"
+      },
+      "expected": {
+        "A": "include",
+        "B": "exclude",
+        "C": "exclude",
+        "D": "exclude",
+        "E": "review"
+      }
+    }
+  ]
+}

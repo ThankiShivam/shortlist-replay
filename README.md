@@ -2,7 +2,21 @@
 
 A job-search benchmark for one question. When a candidate changes a preference, which recommendations should change, and can the system explain why?
 
-**Current status — design and five hand-labeled examples.** This README contains the first test case and its expected answers. Implementation, model runs and benchmark results are planned.
+**Runnable baseline.** Replay a remote-only job search, allow hybrid work in Gurugram, then withdraw that preference. The offline Python runner filters a fixed set of five annotated postings, ranks eligible results with BM25, and shows the exact quoted evidence for each decision.
+
+## Run locally
+
+Requires Python 3.8 or later and its standard library. Run these commands from the repository root.
+
+```sh
+python3 replay.py --check
+python3 replay.py --json --check
+python3 -m unittest -v
+```
+
+The first shortlist contains A. The second adds B. The third removes B. E stays in the review list because the posting leaves its eligible countries unspecified. `--check` compares all 15 decisions to the independent labels in `fixtures/remote_india.json` and exits with status 1 on a mismatch. The JSON output includes the ranking, additions, removals and quoted evidence for every turn.
+
+The fixture retains the exact posting text alongside manually annotated role and location fields. Unknown fields use JSON `null`. BM25 uses a fixed corpus across turns and posting ID to break ties. The quote is taken from the annotation. Embedding search and LLM-generated explanations are planned experiments.
 
 ## One conversation, two shortlists
 
@@ -20,7 +34,7 @@ These five postings are fictional. The table gives their complete text and expec
 
 Only B enters. A stays eligible, C fails the location requirement, D fails the role-level requirement and E still needs clarification. If the student later withdraws permission for hybrid work, the shortlist should return to A. For B, the reviewer can check the reason directly against “Hybrid in Gurugram.”
 
-## Proposed implementation
+## Planned experiments and storage
 
 1. Store immutable posting snapshots in PostgreSQL. Keep candidate preferences as a sequence of typed edits so every result can be replayed against the same inputs.
 2. Use a Python service to apply hard constraints on role level and location. Store each as **eligible**, **ineligible** or **needs clarification**. Rank eligible roles by the candidate’s softer preferences.
@@ -36,7 +50,7 @@ Only B enters. A stays eligible, C fails the location requirement, D fails the r
 | Ranking quality | On a larger, separately labeled set, compare nDCG@5 for BM25 and hybrid retrieval using graded relevance. Group train and test splits by conversation to keep revisions together. |
 | Explanation quality | Count claims independently judged to be supported by the cited text, divided by all claims reviewed. Track missing citations separately. |
 
-The first implementation milestone is a reproducible run of the five postings above with a per-posting diff. A larger evaluation would add changes to pay, seniority and work location, include paraphrases, and publish failure examples alongside the aggregate scores.
+The runner reproduces the five-posting example with a per-posting decision and shortlist diff. A larger evaluation would add changes to pay, seniority and work location, include paraphrases, and publish failure examples alongside the aggregate scores.
 
 ## Motivation and related work
 
